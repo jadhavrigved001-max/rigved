@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Login</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    height: 100vh;
+    overflow: hidden;
+    background: #07090d;
+    color: white;
+}
+
+/* Animated Background */
+.background {
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(120deg, rgba(255, 40, 70, .08), transparent 40%),
+        linear-gradient(300deg, rgba(0, 180, 255, .08), transparent 40%),
+        #080a0f;
+}
+
+.background::before {
+    content: "";
+    position: absolute;
+    width: 700px;
+    height: 700px;
+    background: #ff304f;
+    filter: blur(180px);
+    opacity: .12;
+    top: -250px;
+    left: -200px;
+    animation: moveGlow 7s infinite alternate;
+}
+
+.background::after {
+    content: "";
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: #1877ff;
+    filter: blur(180px);
+    opacity: .1;
+    right: -200px;
+    bottom: -250px;
+    animation: moveGlow 8s infinite alternate-reverse;
+}
+
+@keyframes moveGlow {
+    from { transform: translate(0,0); }
+    to { transform: translate(120px,80px); }
+}
+
+/* Grid */
+.grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size: 45px 45px;
+    transform: perspective(500px) rotateX(55deg) scale(1.8);
+    transform-origin: center bottom;
+}
+
+/* Scan line */
+.scan {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #ff304f,
+        transparent
+    );
+    box-shadow: 0 0 20px #ff304f;
+    animation: scan 5s linear infinite;
+    opacity: .35;
+}
+
+@keyframes scan {
+    from { top: -5%; }
+    to { top: 105%; }
+}
+
+/* Particles */
+.particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #ff304f;
+    box-shadow: 0 0 10px #ff304f;
+    border-radius: 50%;
+    animation: float 5s infinite linear;
+}
+
+.p1 { left: 10%; animation-delay: 0s; }
+.p2 { left: 25%; animation-delay: 2s; }
+.p3 { left: 50%; animation-delay: 1s; }
+.p4 { left: 70%; animation-delay: 3s; }
+.p5 { left: 90%; animation-delay: 1.5s; }
+
+@keyframes float {
+    from {
+        top: 105%;
+        opacity: 0;
+    }
+    20% { opacity: 1; }
+    to {
+        top: -10%;
+        opacity: 0;
+    }
+}
+
+/* Main */
+.container {
+    position: relative;
+    z-index: 5;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Login Card */
+.login-card {
+    width: 420px;
+    padding: 45px;
+    background: rgba(10, 12, 17, .88);
+    border: 1px solid rgba(255,255,255,.12);
+    clip-path: polygon(
+        0 0,
+        94% 0,
+        100% 7%,
+        100% 100%,
+        6% 100%,
+        0 93%
+    );
+    box-shadow:
+        0 0 50px rgba(0,0,0,.7),
+        inset 0 0 30px rgba(255,40,70,.03);
+
+    animation: cardIn 1s ease forwards;
+}
+
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(.94);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Logo */
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo-symbol {
+    display: inline-flex;
+    width: 65px;
+    height: 65px;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #ff304f;
+    transform: rotate(45deg);
+    box-shadow: 0 0 25px rgba(255,48,79,.35);
+    animation: logoPulse 2s infinite;
+}
+
+.logo-symbol span {
+    transform: rotate(-45deg);
+    font-size: 27px;
+    font-weight: 900;
+}
+
+@keyframes logoPulse {
+    50% {
+        box-shadow: 0 0 45px rgba(255,48,79,.65);
+    }
+}
+
+h1 {
+    text-align: center;
+    font-size: 31px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    text-align: center;
+    color: #777d88;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-top: 8px;
+    margin-bottom: 35px;
+}
+
+/* Input */
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #8e949f;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    height: 50px;
+    padding: 0 15px;
+    color: white;
+    background: #11141a;
+    border: 1px solid #292d35;
+    outline: none;
+    transition: .3s;
+}
+
+.input-group input:focus {
+    border-color: #ff304f;
+    box-shadow: 0 0 18px rgba(255,48,79,.2);
+}
+
+/* Options */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px 0 25px;
+    font-size: 12px;
+    color: #858b95;
+}
+
+.options a {
+    color: #ff526a;
+    text-decoration: none;
+}
+
+/* Button */
+.login-btn {
+    position: relative;
+    width: 100%;
+    height: 55px;
+    border: none;
+    background: #ff304f;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: .3s;
+}
+
+.login-btn::before {
+    content: "";
+    position: absolute;
+    width: 40px;
+    height: 100%;
+    top: 0;
+    left: -60px;
+    background: rgba(255,255,255,.4);
+    transform: skewX(-20deg);
+    transition: .5s;
+}
+
+.login-btn:hover::before {
+    left: 110%;
+}
+
+.login-btn:hover {
+    background: #ff4962;
+    box-shadow: 0 0 30px rgba(255,48,79,.45);
+    transform: translateY(-2px);
+}
+
+/* Register */
+.register {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 12px;
+    color: #777d88;
+}
+
+.register a {
+    color: white;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+.register a:hover {
+    color: #ff304f;
+}
+
+/* Corner decorations */
+.corner {
+    position: fixed;
+    width: 80px;
+    height: 80px;
+    border-color: #ff304f;
+    opacity: .5;
+}
+
+.top-left {
+    top: 25px;
+    left: 25px;
+    border-top: 2px solid;
+    border-left: 2px solid;
+}
+
+.bottom-right {
+    right: 25px;
+    bottom: 25px;
+    border-right: 2px solid;
+    border-bottom: 2px solid;
+}
+
+.status {
+    position: absolute;
+    bottom: 25px;
+    left: 30px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #555b65;
+}
+
+.status span {
+    color: #ff304f;
+}
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+<div class="grid"></div>
+<div class="scan"></div>
+
+<div class="particle p1"></div>
+<div class="particle p2"></div>
+<div class="particle p3"></div>
+<div class="particle p4"></div>
+<div class="particle p5"></div>
+
+<div class="corner top-left"></div>
+<div class="corner bottom-right"></div>
+
+<div class="container">
+
+    <div class="login-card">
+
+        <div class="logo">
+            <div class="logo-symbol">
+                <span>G</span>
+            </div>
+        </div>
+
+        <h1>Game Portal</h1>
+
+        <div class="subtitle">
+            ENTER THE BATTLEFIELD
+        </div>
+
+        <form id="loginForm">
+
+            <div class="input-group">
+                <label>PLAYER ID</label>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Enter player ID"
+                    required
+                >
+            </div>
+
+            <div class="input-group">
+                <label>PASSWORD</label>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password"
+                    required
+                >
+            </div>
+
+            <div class="options">
+                <label>
+                    <input type="checkbox">
+                    Remember me
+                </label>
+
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <button class="login-btn" type="submit">
+                ENTER GAME
+            </button>
+
+        </form>
+
+        <div class="register">
+            NEW PLAYER?
+            <a href="#">CREATE ACCOUNT →</a>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="status">
+    SERVER STATUS: <span>ONLINE</span>
+</div>
+
+<script>
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+
+    e.preventDefault();
+
+    const button = document.querySelector(".login-btn");
+
+    button.innerText = "AUTHENTICATING...";
+    button.style.background = "#c9233e";
+
+    setTimeout(() => {
+        button.innerText = "ACCESS GRANTED";
+
+        setTimeout(() => {
+            alert("Welcome to the game!");
+            button.innerText = "ENTER GAME";
+            button.style.background = "#ff304f";
+        }, 700);
+
+    }, 1200);
+});
+</script>
+
+</body>
+</html>
