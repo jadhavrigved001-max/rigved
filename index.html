@@ -3,454 +3,1218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Game Login</title>
+
+<title>A Musafir Cafe</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 
 <style>
+
+/* =========================
+   GLOBAL
+========================= */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
-    height: 100vh;
-    overflow: hidden;
-    background: #07090d;
-    color: white;
+    font-family: 'Montserrat', sans-serif;
+    background: #f5efe5;
+    color: #30251e;
+    overflow-x: hidden;
 }
 
-/* Animated Background */
-.background {
+:root {
+    --cream: #f5efe5;
+    --dark: #30251e;
+    --brown: #6d4934;
+    --coffee: #9b6846;
+    --gold: #c59a5b;
+    --light: #fffaf2;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav {
     position: fixed;
-    inset: 0;
-    background:
-        linear-gradient(120deg, rgba(255, 40, 70, .08), transparent 40%),
-        linear-gradient(300deg, rgba(0, 180, 255, .08), transparent 40%),
-        #080a0f;
-}
-
-.background::before {
-    content: "";
-    position: absolute;
-    width: 700px;
-    height: 700px;
-    background: #ff304f;
-    filter: blur(180px);
-    opacity: .12;
-    top: -250px;
-    left: -200px;
-    animation: moveGlow 7s infinite alternate;
-}
-
-.background::after {
-    content: "";
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    background: #1877ff;
-    filter: blur(180px);
-    opacity: .1;
-    right: -200px;
-    bottom: -250px;
-    animation: moveGlow 8s infinite alternate-reverse;
-}
-
-@keyframes moveGlow {
-    from { transform: translate(0,0); }
-    to { transform: translate(120px,80px); }
-}
-
-/* Grid */
-.grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-    background-size: 45px 45px;
-    transform: perspective(500px) rotateX(55deg) scale(1.8);
-    transform-origin: center bottom;
-}
-
-/* Scan line */
-.scan {
-    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 2px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        #ff304f,
-        transparent
-    );
-    box-shadow: 0 0 20px #ff304f;
-    animation: scan 5s linear infinite;
-    opacity: .35;
-}
-
-@keyframes scan {
-    from { top: -5%; }
-    to { top: 105%; }
-}
-
-/* Particles */
-.particle {
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    background: #ff304f;
-    box-shadow: 0 0 10px #ff304f;
-    border-radius: 50%;
-    animation: float 5s infinite linear;
-}
-
-.p1 { left: 10%; animation-delay: 0s; }
-.p2 { left: 25%; animation-delay: 2s; }
-.p3 { left: 50%; animation-delay: 1s; }
-.p4 { left: 70%; animation-delay: 3s; }
-.p5 { left: 90%; animation-delay: 1.5s; }
-
-@keyframes float {
-    from {
-        top: 105%;
-        opacity: 0;
-    }
-    20% { opacity: 1; }
-    to {
-        top: -10%;
-        opacity: 0;
-    }
-}
-
-/* Main */
-.container {
-    position: relative;
-    z-index: 5;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Login Card */
-.login-card {
-    width: 420px;
-    padding: 45px;
-    background: rgba(10, 12, 17, .88);
-    border: 1px solid rgba(255,255,255,.12);
-    clip-path: polygon(
-        0 0,
-        94% 0,
-        100% 7%,
-        100% 100%,
-        6% 100%,
-        0 93%
-    );
-    box-shadow:
-        0 0 50px rgba(0,0,0,.7),
-        inset 0 0 30px rgba(255,40,70,.03);
-
-    animation: cardIn 1s ease forwards;
-}
-
-@keyframes cardIn {
-    from {
-        opacity: 0;
-        transform: translateY(50px) scale(.94);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Logo */
-.logo {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-.logo-symbol {
-    display: inline-flex;
-    width: 65px;
-    height: 65px;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid #ff304f;
-    transform: rotate(45deg);
-    box-shadow: 0 0 25px rgba(255,48,79,.35);
-    animation: logoPulse 2s infinite;
-}
-
-.logo-symbol span {
-    transform: rotate(-45deg);
-    font-size: 27px;
-    font-weight: 900;
-}
-
-@keyframes logoPulse {
-    50% {
-        box-shadow: 0 0 45px rgba(255,48,79,.65);
-    }
-}
-
-h1 {
-    text-align: center;
-    font-size: 31px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-}
-
-.subtitle {
-    text-align: center;
-    color: #777d88;
-    font-size: 12px;
-    letter-spacing: 2px;
-    margin-top: 8px;
-    margin-bottom: 35px;
-}
-
-/* Input */
-.input-group {
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: #8e949f;
-    margin-bottom: 8px;
-}
-
-.input-group input {
-    width: 100%;
-    height: 50px;
-    padding: 0 15px;
-    color: white;
-    background: #11141a;
-    border: 1px solid #292d35;
-    outline: none;
-    transition: .3s;
-}
-
-.input-group input:focus {
-    border-color: #ff304f;
-    box-shadow: 0 0 18px rgba(255,48,79,.2);
-}
-
-/* Options */
-.options {
+    height: 78px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 5px 0 25px;
-    font-size: 12px;
-    color: #858b95;
+    padding: 0 7%;
+    z-index: 1000;
+
+    background: rgba(35, 25, 19, 0.82);
+    backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid rgba(255,255,255,.12);
 }
 
-.options a {
-    color: #ff526a;
-    text-decoration: none;
-}
-
-/* Button */
-.login-btn {
-    position: relative;
-    width: 100%;
-    height: 55px;
-    border: none;
-    background: #ff304f;
+.logo {
     color: white;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 3px;
-    cursor: pointer;
-    overflow: hidden;
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+}
+
+.logo span {
+    color: #d5ad70;
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 1px;
     transition: .3s;
 }
 
-.login-btn::before {
-    content: "";
-    position: absolute;
-    width: 40px;
-    height: 100%;
-    top: 0;
-    left: -60px;
-    background: rgba(255,255,255,.4);
-    transform: skewX(-20deg);
-    transition: .5s;
+.nav-links a:hover {
+    color: #d5ad70;
 }
 
-.login-btn:hover::before {
-    left: 110%;
-}
-
-.login-btn:hover {
-    background: #ff4962;
-    box-shadow: 0 0 30px rgba(255,48,79,.45);
-    transform: translateY(-2px);
-}
-
-/* Register */
-.register {
-    text-align: center;
-    margin-top: 25px;
-    font-size: 12px;
-    color: #777d88;
-}
-
-.register a {
+.nav-btn {
+    padding: 12px 22px;
+    border: 1px solid #d5ad70;
     color: white;
     text-decoration: none;
-    margin-left: 5px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: .3s;
 }
 
-.register a:hover {
-    color: #ff304f;
+.nav-btn:hover {
+    background: #d5ad70;
+    color: #30251e;
 }
 
-/* Corner decorations */
-.corner {
-    position: fixed;
-    width: 80px;
-    height: 80px;
-    border-color: #ff304f;
-    opacity: .5;
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    height: 100vh;
+    min-height: 700px;
+    position: relative;
+
+    background:
+        linear-gradient(
+            rgba(25,18,14,.55),
+            rgba(25,18,14,.72)
+        ),
+        url("https://images.unsplash.com/photo-1511081692775-05d0f180a065?auto=format&fit=crop&w=2000&q=90");
+
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
 }
 
-.top-left {
-    top: 25px;
-    left: 25px;
-    border-top: 2px solid;
-    border-left: 2px solid;
+.hero-content {
+    color: white;
+    max-width: 900px;
+    padding: 20px;
+
+    animation: heroIn 1.4s ease;
 }
 
-.bottom-right {
-    right: 25px;
-    bottom: 25px;
-    border-right: 2px solid;
-    border-bottom: 2px solid;
+@keyframes heroIn {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-.status {
-    position: absolute;
-    bottom: 25px;
-    left: 30px;
-    font-size: 10px;
+.small-title {
+    font-size: 12px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: #e0bc80;
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(65px, 10vw, 140px);
+    line-height: .85;
+    font-weight: 400;
+}
+
+.hero h1 em {
+    font-family: 'Playfair Display', serif;
+    font-size: .65em;
+}
+
+.hero p {
+    margin: 35px auto;
+    max-width: 600px;
+    line-height: 1.8;
+    color: #eee2d4;
+    font-size: 15px;
+}
+
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 15px 30px;
+    text-decoration: none;
+    font-size: 12px;
     letter-spacing: 2px;
-    color: #555b65;
+    transition: .3s;
 }
 
-.status span {
-    color: #ff304f;
+.btn-primary {
+    background: #c49a5d;
+    color: #241a14;
 }
+
+.btn-primary:hover {
+    background: white;
+    transform: translateY(-3px);
+}
+
+.btn-outline {
+    border: 1px solid rgba(255,255,255,.6);
+    color: white;
+}
+
+.btn-outline:hover {
+    background: white;
+    color: #30251e;
+}
+
+/* =========================
+   INTRO
+========================= */
+
+.intro {
+    padding: 110px 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.intro-image {
+    height: 550px;
+
+    background:
+        url("https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=90");
+
+    background-size: cover;
+    background-position: center;
+
+    position: relative;
+}
+
+.intro-image::after {
+    content: "";
+    position: absolute;
+    inset: 18px;
+    border: 1px solid rgba(255,255,255,.5);
+}
+
+.section-label {
+    color: #a16f48;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(45px, 5vw, 70px);
+    font-weight: 400;
+    line-height: 1;
+    margin-bottom: 25px;
+}
+
+.section-title em {
+    font-family: 'Playfair Display', serif;
+}
+
+.intro-text p {
+    color: #66584f;
+    line-height: 1.9;
+    font-size: 15px;
+    margin-bottom: 18px;
+}
+
+.signature {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 25px;
+    color: #8d6143;
+    margin-top: 30px;
+}
+
+/* =========================
+   JOURNEY STRIP
+========================= */
+
+.journey {
+    background: #30251e;
+    color: white;
+    padding: 70px 8%;
+
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 40px;
+
+    text-align: center;
+}
+
+.journey-item {
+    padding: 20px;
+}
+
+.journey-icon {
+    font-size: 35px;
+    margin-bottom: 18px;
+}
+
+.journey h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 27px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+.journey p {
+    color: #c9bcb1;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+/* =========================
+   MENU
+========================= */
+
+.menu-section {
+    padding: 120px 8%;
+    text-align: center;
+}
+
+.menu-heading {
+    max-width: 650px;
+    margin: auto;
+}
+
+.menu-heading p {
+    color: #74665c;
+    line-height: 1.8;
+    margin-bottom: 55px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 25px;
+    text-align: left;
+}
+
+.menu-card {
+    background: #fffaf3;
+    padding: 18px;
+    transition: .4s;
+    border: 1px solid #e5d9ca;
+}
+
+.menu-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(65,45,30,.12);
+}
+
+.menu-img {
+    height: 240px;
+    background-size: cover;
+    background-position: center;
+    margin-bottom: 20px;
+}
+
+.coffee {
+    background-image: url("https://images.unsplash.com/photo-1498804103079-a6351b050096?auto=format&fit=crop&w=800&q=85");
+}
+
+.pasta {
+    background-image: url("https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=800&q=85");
+}
+
+.dessert {
+    background-image: url("https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=800&q=85");
+}
+
+.menu-info {
+    padding: 5px 5px 12px;
+}
+
+.menu-info h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 27px;
+    font-weight: 400;
+}
+
+.menu-info p {
+    color: #7c7067;
+    font-size: 12px;
+    line-height: 1.6;
+    margin: 10px 0;
+}
+
+.price {
+    color: #a16f48;
+    font-weight: 600;
+}
+
+/* =========================
+   QUOTE
+========================= */
+
+.quote {
+    min-height: 500px;
+
+    background:
+        linear-gradient(rgba(36,26,20,.72),rgba(36,26,20,.72)),
+        url("https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1800&q=90");
+
+    background-size: cover;
+    background-position: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    color: white;
+    padding: 50px;
+}
+
+.quote-content {
+    max-width: 850px;
+}
+
+.quote-mark {
+    font-family: Georgia, serif;
+    font-size: 80px;
+    color: #d3a665;
+    line-height: .5;
+}
+
+.quote h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(35px,5vw,65px);
+    font-weight: 400;
+    margin: 35px 0;
+}
+
+.quote p {
+    color: #d9ccc0;
+    letter-spacing: 2px;
+    font-size: 12px;
+}
+
+/* =========================
+   GALLERY
+========================= */
+
+.gallery {
+    padding: 110px 8%;
+}
+
+.gallery-heading {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: 1.2fr .8fr .8fr;
+    grid-template-rows: 260px 260px;
+    gap: 15px;
+}
+
+.gallery-item {
+    background-size: cover;
+    background-position: center;
+    transition: .4s;
+}
+
+.gallery-item:hover {
+    transform: scale(.98);
+    filter: brightness(.8);
+}
+
+.g1 {
+    background-image:url("https://images.unsplash.com/photo-1512568400610-62da28bc8a13?auto=format&fit=crop&w=1000&q=85");
+    grid-row: span 2;
+}
+
+.g2 {
+    background-image:url("https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=85");
+}
+
+.g3 {
+    background-image:url("https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=800&q=85");
+}
+
+.g4 {
+    background-image:url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=85");
+}
+
+.g5 {
+    background-image:url("https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=800&q=85");
+}
+
+/* =========================
+   RESERVATION
+========================= */
+
+.reservation {
+    background: #e8ddcf;
+    padding: 110px 8%;
+}
+
+.reservation-box {
+    max-width: 1100px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 70px;
+    align-items: center;
+}
+
+.reservation-text p {
+    color: #66584f;
+    line-height: 1.8;
+    margin-bottom: 30px;
+}
+
+form {
+    background: #fffaf3;
+    padding: 40px;
+    box-shadow: 0 15px 50px rgba(65,45,30,.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+input, select {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+
+    border: 1px solid #ded0c0;
+    background: #fffdf9;
+    outline: none;
+
+    font-family: 'Montserrat', sans-serif;
+}
+
+input:focus,
+select:focus {
+    border-color: #a16f48;
+}
+
+.submit {
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    background: #30251e;
+    color: white;
+    padding: 16px;
+    letter-spacing: 2px;
+    transition: .3s;
+}
+
+.submit:hover {
+    background: #a16f48;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background: #241b16;
+    color: white;
+    padding: 75px 8% 30px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 50px;
+    padding-bottom: 50px;
+}
+
+.footer-logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 34px;
+    margin-bottom: 15px;
+}
+
+.footer-about {
+    color: #a99d94;
+    line-height: 1.8;
+    font-size: 13px;
+    max-width: 300px;
+}
+
+footer h4 {
+    color: #d5ad70;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    font-size: 11px;
+}
+
+footer ul {
+    list-style: none;
+}
+
+footer li {
+    margin-bottom: 12px;
+}
+
+footer a {
+    color: #b7ada5;
+    text-decoration: none;
+    font-size: 12px;
+}
+
+footer a:hover {
+    color: white;
+}
+
+.copyright {
+    border-top: 1px solid rgba(255,255,255,.1);
+    padding-top: 25px;
+    text-align: center;
+    color: #766c65;
+    font-size: 11px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 900px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .intro,
+    .reservation-box {
+        grid-template-columns: 1fr;
+    }
+
+    .intro-image {
+        height: 450px;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .journey {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media(max-width: 600px) {
+
+    nav {
+        padding: 0 5%;
+    }
+
+    .nav-btn {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 65px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+    }
+
+    .intro,
+    .menu-section,
+    .gallery,
+    .reservation {
+        padding: 80px 6%;
+    }
+
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(5, 220px);
+    }
+
+    .g1 {
+        grid-row: span 1;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    form {
+        padding: 25px;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="background"></div>
-<div class="grid"></div>
-<div class="scan"></div>
+<!-- NAVBAR -->
 
-<div class="particle p1"></div>
-<div class="particle p2"></div>
-<div class="particle p3"></div>
-<div class="particle p4"></div>
-<div class="particle p5"></div>
+<nav>
 
-<div class="corner top-left"></div>
-<div class="corner bottom-right"></div>
+    <div class="logo">
+        A <span>Musafir</span> Cafe
+    </div>
 
-<div class="container">
+    <ul class="nav-links">
+        <li><a href="#home">HOME</a></li>
+        <li><a href="#story">OUR STORY</a></li>
+        <li><a href="#menu">MENU</a></li>
+        <li><a href="#gallery">GALLERY</a></li>
+        <li><a href="#contact">CONTACT</a></li>
+    </ul>
 
-    <div class="login-card">
+    <a href="#reservation" class="nav-btn">
+        RESERVE A TABLE
+    </a>
 
-        <div class="logo">
-            <div class="logo-symbol">
-                <span>G</span>
-            </div>
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <div class="small-title">
+            Coffee • Conversations • Journeys
         </div>
 
-        <h1>Game Portal</h1>
+        <h1>
+            A <em>Musafir</em><br>
+            Cafe
+        </h1>
 
-        <div class="subtitle">
-            ENTER THE BATTLEFIELD
-        </div>
+        <p>
+            A little place for wandering souls, slow mornings,
+            beautiful conversations and unforgettable cups of coffee.
+        </p>
 
-        <form id="loginForm">
+        <div class="hero-buttons">
 
-            <div class="input-group">
-                <label>PLAYER ID</label>
-                <input
-                    type="text"
-                    id="username"
-                    placeholder="Enter player ID"
-                    required
-                >
-            </div>
+            <a href="#menu" class="btn btn-primary">
+                EXPLORE MENU
+            </a>
 
-            <div class="input-group">
-                <label>PASSWORD</label>
-                <input
-                    type="password"
-                    id="password"
-                    placeholder="Enter password"
-                    required
-                >
-            </div>
+            <a href="#story" class="btn btn-outline">
+                OUR STORY
+            </a>
 
-            <div class="options">
-                <label>
-                    <input type="checkbox">
-                    Remember me
-                </label>
-
-                <a href="#">Forgot Password?</a>
-            </div>
-
-            <button class="login-btn" type="submit">
-                ENTER GAME
-            </button>
-
-        </form>
-
-        <div class="register">
-            NEW PLAYER?
-            <a href="#">CREATE ACCOUNT →</a>
         </div>
 
     </div>
 
-</div>
+</section>
 
-<div class="status">
-    SERVER STATUS: <span>ONLINE</span>
-</div>
+
+<!-- STORY -->
+
+<section class="intro" id="story">
+
+    <div class="intro-image"></div>
+
+    <div class="intro-text">
+
+        <div class="section-label">
+            THE MUSAFIR STORY
+        </div>
+
+        <h2 class="section-title">
+            Every cup has<br>
+            a <em>journey.</em>
+        </h2>
+
+        <p>
+            A Musafir Cafe was born from a simple idea —
+            that every traveller deserves a place where they
+            can pause, breathe and feel at home.
+        </p>
+
+        <p>
+            From freshly brewed coffee to conversations that
+            last for hours, our cafe is designed for people
+            who enjoy the journey as much as the destination.
+        </p>
+
+        <div class="signature">
+            — Your fellow Musafir
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- JOURNEY -->
+
+<section class="journey">
+
+    <div class="journey-item">
+
+        <div class="journey-icon">☕</div>
+
+        <h3>Slow Coffee</h3>
+
+        <p>
+            Carefully brewed coffee made for
+            slow mornings and long conversations.
+        </p>
+
+    </div>
+
+
+    <div class="journey-item">
+
+        <div class="journey-icon">✦</div>
+
+        <h3>Good Vibes</h3>
+
+        <p>
+            A warm space where strangers become
+            friends and stories become memories.
+        </p>
+
+    </div>
+
+
+    <div class="journey-item">
+
+        <div class="journey-icon">⌁</div>
+
+        <h3>Travel Soul</h3>
+
+        <p>
+            Inspired by roads, mountains,
+            sunsets and the beautiful unknown.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- MENU -->
+
+<section class="menu-section" id="menu">
+
+    <div class="menu-heading">
+
+        <div class="section-label">
+            FROM OUR KITCHEN
+        </div>
+
+        <h2 class="section-title">
+            Taste the <em>journey.</em>
+        </h2>
+
+        <p>
+            Simple ingredients, honest flavours and a little
+            love in everything that reaches your table.
+        </p>
+
+    </div>
+
+
+    <div class="menu-grid">
+
+        <div class="menu-card">
+
+            <div class="menu-img coffee"></div>
+
+            <div class="menu-info">
+
+                <h3>Musafir Coffee</h3>
+
+                <p>
+                    Rich roasted coffee with a smooth,
+                    aromatic finish.
+                </p>
+
+                <div class="price">
+                    ₹149
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-card">
+
+            <div class="menu-img pasta"></div>
+
+            <div class="menu-info">
+
+                <h3>Traveller's Pasta</h3>
+
+                <p>
+                    Creamy handmade pasta prepared
+                    with our signature sauce.
+                </p>
+
+                <div class="price">
+                    ₹299
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="menu-card">
+
+            <div class="menu-img dessert"></div>
+
+            <div class="menu-info">
+
+                <h3>Sunset Dessert</h3>
+
+                <p>
+                    A sweet little ending to your
+                    cafe journey.
+                </p>
+
+                <div class="price">
+                    ₹199
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- QUOTE -->
+
+<section class="quote">
+
+    <div class="quote-content">
+
+        <div class="quote-mark">
+            “
+        </div>
+
+        <h2>
+            Some journeys don't need a destination.
+            They just need good coffee.
+        </h2>
+
+        <p>
+            A MUSAFIR CAFE
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- GALLERY -->
+
+<section class="gallery" id="gallery">
+
+    <div class="gallery-heading">
+
+        <div class="section-label">
+            INSIDE A MUSAFIR
+        </div>
+
+        <h2 class="section-title">
+            Moments worth <em>remembering.</em>
+        </h2>
+
+    </div>
+
+
+    <div class="gallery-grid">
+
+        <div class="gallery-item g1"></div>
+
+        <div class="gallery-item g2"></div>
+
+        <div class="gallery-item g3"></div>
+
+        <div class="gallery-item g4"></div>
+
+        <div class="gallery-item g5"></div>
+
+    </div>
+
+</section>
+
+
+<!-- RESERVATION -->
+
+<section class="reservation" id="reservation">
+
+    <div class="reservation-box">
+
+        <div class="reservation-text">
+
+            <div class="section-label">
+                YOUR NEXT STOP
+            </div>
+
+            <h2 class="section-title">
+                Save a seat<br>
+                for your <em>journey.</em>
+            </h2>
+
+            <p>
+                Whether it's a first date, a family dinner,
+                a solo coffee or a late-night conversation —
+                there's always a table waiting for you.
+            </p>
+
+            <a href="#contact" class="btn btn-primary">
+                FIND US
+            </a>
+
+        </div>
+
+
+        <form id="reservationForm">
+
+            <div class="form-row">
+
+                <input
+                    type="text"
+                    placeholder="Your Name"
+                    required
+                >
+
+                <input
+                    type="tel"
+                    placeholder="Phone Number"
+                    required
+                >
+
+            </div>
+
+            <div class="form-row">
+
+                <input
+                    type="date"
+                    required
+                >
+
+                <input
+                    type="time"
+                    required
+                >
+
+            </div>
+
+            <select required>
+
+                <option value="">
+                    Number of Guests
+                </option>
+
+                <option>1 Guest</option>
+                <option>2 Guests</option>
+                <option>3 Guests</option>
+                <option>4 Guests</option>
+                <option>5+ Guests</option>
+
+            </select>
+
+            <button class="submit" type="submit">
+                BOOK MY TABLE
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer id="contact">
+
+    <div class="footer-grid">
+
+        <div>
+
+            <div class="footer-logo">
+                A Musafir Cafe
+            </div>
+
+            <p class="footer-about">
+                A little cafe for big journeys.
+                Come for the coffee, stay for the stories.
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h4>EXPLORE</h4>
+
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#story">Our Story</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+            </ul>
+
+        </div>
+
+
+        <div>
+
+            <h4>VISIT US</h4>
+
+            <ul>
+                <li>
+                    <a href="#">
+                        12, Traveller's Lane
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        Your City, India
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#">
+                        +91 98765 43210
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+
+        <div>
+
+            <h4>FOLLOW</h4>
+
+            <ul>
+                <li><a href="#">Instagram</a></li>
+                <li><a href="#">Facebook</a></li>
+                <li><a href="#">Google Maps</a></li>
+            </ul>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 A Musafir Cafe · Made with coffee & stories.
+
+    </div>
+
+</footer>
+
 
 <script>
-document.getElementById("loginForm").addEventListener("submit", function(e) {
 
-    e.preventDefault();
+document.getElementById("reservationForm")
+.addEventListener("submit", function(event) {
 
-    const button = document.querySelector(".login-btn");
+    event.preventDefault();
 
-    button.innerText = "AUTHENTICATING...";
-    button.style.background = "#c9233e";
+    const button = document.querySelector(".submit");
+
+    button.innerText = "TABLE RESERVED ✓";
+
+    button.style.background = "#a16f48";
 
     setTimeout(() => {
-        button.innerText = "ACCESS GRANTED";
 
-        setTimeout(() => {
-            alert("Welcome to the game!");
-            button.innerText = "ENTER GAME";
-            button.style.background = "#ff304f";
-        }, 700);
+        button.innerText = "BOOK MY TABLE";
 
-    }, 1200);
+        button.style.background = "#30251e";
+
+    }, 3000);
+
 });
+
 </script>
 
 </body>
